@@ -3,11 +3,7 @@ function getNav(active) {
   return `
   <nav>
     <a href="index.html" class="nav-logo">
-      <div class="logo-badge">CE<br>MU</div>
-      <div class="logo-text">
-        <strong>CEMU</strong>
-        <span>Centro Educacional de Muriqui</span>
-      </div>
+      <img src="logo.png" alt="CEMU Rede de Ensino" class="nav-logo-img">
     </a>
     <ul class="nav-links">
       <li><a href="index.html" ${active==='home'?'class="active"':''}>Início</a></li>
@@ -36,8 +32,7 @@ function getFooter() {
   <footer>
     <div class="footer-grid">
       <div class="footer-brand">
-        <div class="footer-logo-badge">CE<br>MU</div>
-        <strong style="color:white; font-size:1rem; letter-spacing:2px;">CEMU</strong>
+        <img src="logo.png" alt="CEMU" style="height:64px; margin-bottom:1rem; filter: brightness(0) invert(1);">
         <p>Centro Educacional de Muriqui — formando crianças com amor, dedicação e excelência. Nossa missão é contribuir para um futuro brilhante para cada aluno.</p>
       </div>
       <div class="footer-col">
