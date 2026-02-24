@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contato – CEMU</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .contact-section { background: var(--white); }
+
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.4fr;
+    gap: 4rem; margin-top: 3rem; align-items: start;
+  }
+
+  /* INFO CARDS */
+  .info-cards { display: flex; flex-direction: column; gap: 1.2rem; }
+  .info-card {
+    display: flex; align-items: flex-start; gap: 1rem;
+    background: var(--off-white); border-radius: 16px; padding: 1.5rem;
+    border: 2px solid transparent; transition: all 0.3s;
+  }
+  .info-card:hover { border-color: var(--yellow); transform: translateX(4px); }
+  .info-icon {
+    width: 50px; height: 50px; background: var(--yellow); border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .info-card strong { display: block; font-weight: 900; color: var(--dark); font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .info-card span { font-size: 0.88rem; color: var(--gray); font-weight: 600; line-height: 1.5; }
+  .info-card a { color: var(--red); text-decoration: none; font-weight: 700; }
+  .info-card a:hover { text-decoration: underline; }
+
+  /* SOCIAL */
+  .social-section-title { font-weight: 900; color: var(--dark); font-size: 1rem; margin: 2rem 0 1rem; }
+  .socials { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+  .social-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--red); color: white;
+    padding: 10px 18px; border-radius: 50px;
+    font-weight: 700; font-size: 0.85rem; text-decoration: none; transition: all 0.2s;
+  }
+  .social-btn:hover { background: var(--red-dark); transform: translateY(-2px); }
+  .social-btn.wpp { background: #25D366; }
+  .social-btn.wpp:hover { background: #1a9e4e; }
+
+  /* FORM */
+  .contact-form {
+    background: var(--light-gray); border-radius: 24px; padding: 2.5rem;
+  }
+  .contact-form h3 {
+    font-family: 'Playfair Display', serif; font-size: 1.5rem;
+    color: var(--dark); margin-bottom: 0.5rem;
+  }
+  .contact-form .form-sub { font-size: 0.88rem; color: var(--gray); font-weight: 600; margin-bottom: 2rem; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.85rem; font-weight: 800; color: var(--dark); }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    border: 2px solid #e0e0e0; border-radius: 12px;
+    padding: 12px 16px; font-family: 'Nunito', sans-serif;
+    font-size: 0.9rem; font-weight: 600; color: var(--dark);
+    background: var(--white); transition: border-color 0.2s; outline: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(245,200,0,0.15); }
+  .form-group textarea { resize: vertical; min-height: 110px; }
+
+  .btn-submit {
+    width: 100%; background: var(--red); color: white; border: none;
+    padding: 16px; border-radius: 12px; font-family: 'Nunito', sans-serif;
+    font-size: 1rem; font-weight: 900; cursor: pointer; transition: all 0.25s;
+    letter-spacing: 0.5px; margin-top: 0.5rem;
+  }
+  .btn-submit:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(214,40,40,0.3); }
+
+  /* MAP */
+  .map-section { background: var(--light-gray); padding: 5rem 2rem; }
+  .map-wrap {
+    background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+    border-radius: 24px; height: 380px; overflow: hidden;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1rem; font-weight: 700; color: var(--gray);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    position: relative;
+  }
+  .map-wrap span { font-size: 4rem; }
+  .map-wrap h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--dark); }
+  .map-wrap p { font-size: 0.9rem; color: var(--gray); font-weight: 600; }
+  .map-link {
+    background: var(--red); color: white; padding: 12px 28px;
+    border-radius: 50px; text-decoration: none; font-weight: 800;
+    font-size: 0.9rem; transition: all 0.2s; margin-top: 0.5rem;
+  }
+  .map-link:hover { background: var(--red-dark); transform: translateY(-2px); }
+
+  /* FAQ */
+  .faq-section { background: var(--white); }
+  .faq-list { max-width: 800px; margin: 3rem auto 0; display: flex; flex-direction: column; gap: 1rem; }
+  .faq-item {
+    background: var(--off-white); border-radius: 16px;
+    border: 2px solid transparent; overflow: hidden; transition: border-color 0.2s;
+  }
+  .faq-item.open { border-color: var(--yellow); }
+  .faq-q {
+    width: 100%; background: none; border: none; text-align: left;
+    padding: 1.2rem 1.5rem; font-family: 'Nunito', sans-serif; font-size: 0.95rem;
+    font-weight: 800; color: var(--dark); cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  }
+  .faq-q .arrow { font-size: 1.2rem; transition: transform 0.3s; color: var(--red); flex-shrink: 0; }
+  .faq-item.open .faq-q .arrow { transform: rotate(180deg); }
+  .faq-a {
+    max-height: 0; overflow: hidden; transition: max-height 0.4s ease;
+    padding: 0 1.5rem; font-size: 0.9rem; color: var(--gray); font-weight: 600; line-height: 1.7;
+  }
+  .faq-item.open .faq-a { max-height: 300px; padding-bottom: 1.2rem; }
+
+  /* SUCCESS TOAST */
+  .toast {
+    display: none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    background: #25D366; color: white; padding: 14px 28px; border-radius: 50px;
+    font-weight: 800; font-size: 0.95rem; z-index: 9999; box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp { from { bottom: 0; opacity: 0; } to { bottom: 2rem; opacity: 1; } }
+
+  @media (max-width: 900px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<div class="page-hero">
+  <div class="page-hero-dots"></div>
+  <div class="page-hero-content">
+    <span class="page-hero-tag">📬 Fale Conosco</span>
+    <h1><em>Contato</em> &amp; Localização</h1>
+    <p>Estamos aqui para tirar todas as suas dúvidas. Entre em contato e venha nos conhecer!</p>
+  </div>
+</div>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Início</a>
+    <span>›</span>
+    <span>Contato</span>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="container">
+    <span class="section-label">📞 Entre em Contato</span>
+    <h2 class="section-title">Fale com a gente</h2>
+    <div class="contact-grid">
+      <!-- INFO -->
+      <div>
+        <div class="info-cards">
+          <div class="info-card fade-up">
+            <div class="info-icon">📍</div>
+            <div>
+              <strong>Endereço</strong>
+              <span>Muriqui, Mangaratiba — Rio de Janeiro, RJ<br>CEP: [inserir CEP]</span>
+            </div>
+          </div>
+          <div class="info-card fade-up">
+            <div class="info-icon">📞</div>
+            <div>
+              <strong>Telefone</strong>
+              <span><a href="tel:+5521999999999">(21) 99999-9999</a></span>
+            </div>
+          </div>
+          <div class="info-card fade-up">
+            <div class="info-icon">📧</div>
+            <div>
+              <strong>E-mail</strong>
+              <span><a href="mailto:contato@cemu.com.br">contato@cemu.com.br</a></span>
+            </div>
+          </div>
+          <div class="info-card fade-up">
+            <div class="info-icon">🕐</div>
+            <div>
+              <strong>Horário de Atendimento</strong>
+              <span>Segunda a Sexta: 7h30 às 18h00<br>Sábados: mediante agendamento</span>
+            </div>
+          </div>
+        </div>
+
+        <p class="social-section-title">Nos siga nas redes sociais:</p>
+        <div class="socials">
+          <a href="#" class="social-btn">📘 Facebook</a>
+          <a href="#" class="social-btn">📷 Instagram</a>
+          <a href="https://wa.me/5521999999999" target="_blank" class="social-btn wpp">💬 WhatsApp</a>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="contact-form fade-up">
+        <h3>✉️ Envie uma mensagem</h3>
+        <p class="form-sub">Responderemos em até 24 horas úteis.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome *</label>
+            <input type="text" id="nome" placeholder="Seu nome completo">
+          </div>
+          <div class="form-group">
+            <label>Telefone *</label>
+            <input type="tel" id="tel" placeholder="(21) 99999-9999">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com">
+        </div>
+        <div class="form-group">
+          <label>Assunto</label>
+          <select id="assunto">
+            <option value="">Selecione...</option>
+            <option>Informações sobre matrícula</option>
+            <option>Dúvidas pedagógicas</option>
+            <option>Visita à escola</option>
+            <option>Outros assuntos</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Mensagem *</label>
+          <textarea id="mensagem" placeholder="Escreva sua mensagem aqui..."></textarea>
+        </div>
+        <button class="btn-submit" onclick="enviarMensagem()">Enviar mensagem →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MAPA -->
+<section class="map-section">
+  <div class="container">
+    <span class="section-label">🗺️ Localização</span>
+    <h2 class="section-title">Como nos encontrar</h2>
+    <div class="map-wrap">
+      <span>🗺️</span>
+      <h3>Muriqui — Mangaratiba, RJ</h3>
+      <p>Estamos em Muriqui, de fácil acesso pela BR-101</p>
+      <a href="https://maps.google.com/?q=Muriqui+Mangaratiba+RJ" target="_blank" class="map-link">Abrir no Google Maps →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <div style="text-align:center; margin-bottom:1rem;">
+      <span class="section-label">❓ Dúvidas Frequentes</span>
+      <h2 class="section-title">Perguntas Frequentes</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Como fazer a matrícula? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">O processo de matrícula é simples! Entre em contato conosco por telefone, WhatsApp ou pelo formulário acima para agendar uma visita. Após conhecer a escola, basta preencher a documentação necessária na secretaria. Acesse também nossa <a href="matricula.html" style="color:var(--red);">página de matrícula</a>.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Quais documentos são necessários para matrícula? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Para a matrícula são necessários: certidão de nascimento do aluno, carteira de vacinação atualizada, histórico ou declaração escolar (para transferências), CPF e RG dos responsáveis e comprovante de residência. Entre em contato para informações completas.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          A escola oferece transporte escolar? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">O CEMU não opera transporte escolar diretamente, mas temos parcerias com empresas de transporte escolar credenciadas que atendem à região de Muriqui e arredores. Pergunte na secretaria para indicações.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Como funciona a comunicação com os pais? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Mantemos comunicação constante com as famílias através de reuniões periódicas, caderno de recados, grupos de WhatsApp por turma e atendimento presencial com professores e coordenação. Acreditamos que a parceria escola-família é essencial para o desenvolvimento do aluno.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          A escola tem período integral? <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Sim! Oferecemos a opção de período estendido para famílias que precisam. Entre em contato com a secretaria para saber mais sobre os horários disponíveis e os valores correspondentes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<div class="toast" id="toast">✅ Mensagem enviada com sucesso!</div>
+
+<script src="shared.js"></script>
+<script>
+  document.getElementById('nav-placeholder').innerHTML = getNav('contato');
+  document.getElementById('footer-placeholder').innerHTML = getFooter();
+
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  function enviarMensagem() {
+    const nome = document.getElementById('nome').value;
+    const tel = document.getElementById('tel').value;
+    const msg = document.getElementById('mensagem').value;
+    if (!nome || !tel || !msg) {
+      alert('Por favor, preencha os campos obrigatórios (Nome, Telefone e Mensagem).');
+      return;
+    }
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 3500);
+    document.getElementById('nome').value = '';
+    document.getElementById('tel').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('mensagem').value = '';
+  }
+</script>
+</body>
+</html>

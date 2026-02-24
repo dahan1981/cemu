@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre – CEMU</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ABOUT INTRO */
+  .about-intro {
+    background: var(--white);
+    padding: 5rem 2rem;
+  }
+  .about-intro-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; margin-top: 3rem;
+  }
+  .about-visual { position: relative; }
+  .about-main-img {
+    width: 100%; height: 420px;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    border-radius: 24px; display: flex; align-items: center;
+    justify-content: center; font-size: 6rem;
+    box-shadow: 0 20px 60px rgba(214,40,40,0.25);
+  }
+  .about-badge {
+    position: absolute; bottom: -20px; right: -20px;
+    background: var(--yellow); border-radius: 20px;
+    padding: 1.2rem 1.5rem; text-align: center;
+    box-shadow: 0 10px 30px rgba(245,200,0,0.4); border: 4px solid var(--white);
+  }
+  .about-badge strong { display: block; font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--red-dark); line-height: 1; }
+  .about-badge span { font-size: 0.78rem; font-weight: 800; color: var(--red-dark); text-transform: uppercase; }
+
+  .about-text p { font-size: 1.05rem; color: var(--gray); line-height: 1.8; margin-bottom: 1.5rem; font-weight: 600; }
+  .values-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+  .values-list li { display: flex; align-items: flex-start; gap: 1rem; }
+  .value-icon {
+    width: 40px; height: 40px; background: var(--yellow); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0;
+  }
+  .value-info strong { display: block; font-weight: 800; color: var(--dark); font-size: 0.95rem; }
+  .value-info span { font-size: 0.85rem; color: var(--gray); font-weight: 600; }
+
+  /* MISSÃO / VISÃO / VALORES */
+  .mvv-section { background: var(--light-gray); }
+  .mvv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+  .mvv-card {
+    background: var(--white); border-radius: 20px; padding: 2.5rem 2rem;
+    border-top: 4px solid var(--yellow); transition: all 0.3s;
+  }
+  .mvv-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); }
+  .mvv-card .icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+  .mvv-card h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--red); margin-bottom: 1rem; }
+  .mvv-card p { font-size: 0.9rem; color: var(--gray); font-weight: 600; line-height: 1.7; }
+
+  /* EQUIPE */
+  .team-section { background: var(--white); }
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 3rem; }
+  .team-card {
+    text-align: center; padding: 2rem 1.5rem;
+    border: 2px solid var(--light-gray); border-radius: 20px; transition: all 0.3s;
+  }
+  .team-card:hover { border-color: var(--yellow); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); }
+  .team-avatar {
+    width: 90px; height: 90px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--red), var(--red-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; margin: 0 auto 1.2rem;
+    border: 4px solid var(--yellow);
+  }
+  .team-card h3 { font-weight: 800; color: var(--dark); font-size: 1rem; margin-bottom: 0.3rem; }
+  .team-card .role { font-size: 0.82rem; color: var(--red); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.75rem; }
+  .team-card p { font-size: 0.85rem; color: var(--gray); font-weight: 600; line-height: 1.6; }
+
+  /* HISTORY TIMELINE */
+  .history-section { background: var(--red); }
+  .timeline { margin-top: 3rem; display: flex; flex-direction: column; gap: 2rem; position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 22px; top: 0; bottom: 0;
+    width: 3px; background: rgba(245,200,0,0.4);
+  }
+  .timeline-item { display: flex; gap: 2rem; align-items: flex-start; }
+  .tl-dot {
+    width: 46px; height: 46px; border-radius: 50%;
+    background: var(--yellow); display: flex; align-items: center;
+    justify-content: center; font-weight: 900; font-size: 0.75rem;
+    color: var(--red-dark); flex-shrink: 0; position: relative; z-index: 1;
+  }
+  .tl-content { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); border-radius: 16px; padding: 1.5rem; flex: 1; }
+  .tl-content h4 { font-weight: 800; color: var(--yellow); margin-bottom: 0.5rem; font-size: 1rem; }
+  .tl-content p { font-size: 0.88rem; color: rgba(255,255,255,0.8); font-weight: 600; line-height: 1.6; }
+
+  @media (max-width: 900px) {
+    .about-intro-grid { grid-template-columns: 1fr; }
+    .mvv-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .team-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-dots"></div>
+  <div class="page-hero-content">
+    <span class="page-hero-tag">🏫 Nossa Escola</span>
+    <h1>Sobre o <em>CEMU</em></h1>
+    <p>Conheça nossa história, missão e os valores que guiam a formação das nossas crianças há anos em Muriqui.</p>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Início</a>
+    <span>›</span>
+    <span>Sobre</span>
+  </div>
+</div>
+
+<!-- ABOUT INTRO -->
+<section class="about-intro">
+  <div class="container">
+    <span class="section-label">📖 Quem Somos</span>
+    <h2 class="section-title">Uma escola com história<br>e propósito</h2>
+    <div class="about-intro-grid">
+      <div class="about-visual fade-up">
+        <div class="about-main-img">🏫</div>
+        <div class="about-badge">
+          <strong>CEMU</strong>
+          <span>Em Muriqui<br>com amor</span>
+        </div>
+      </div>
+      <div class="about-text fade-up">
+        <p>O <strong>Centro Educacional de Muriqui – CEMU</strong> é uma instituição dedicada à formação integral das crianças e jovens da nossa região. Com um ambiente acolhedor e uma equipe comprometida, proporcionamos muito mais do que ensino: oferecemos experiências que moldam cidadãos.</p>
+        <p>Nossa proposta pedagógica é centrada no aluno, respeitando o ritmo de cada um e incentivando o desenvolvimento socioemocional, a criatividade e o pensamento crítico — tudo com muito carinho e responsabilidade.</p>
+        <ul class="values-list">
+          <li>
+            <div class="value-icon">❤️</div>
+            <div class="value-info"><strong>Educação com afeto</strong><span>Ambiente acolhedor onde cada criança é valorizada</span></div>
+          </li>
+          <li>
+            <div class="value-icon">🎯</div>
+            <div class="value-info"><strong>Metodologia ativa</strong><span>Aprendizado significativo e colaborativo</span></div>
+          </li>
+          <li>
+            <div class="value-icon">🤝</div>
+            <div class="value-info"><strong>Parceria com a família</strong><span>Comunicação aberta e acompanhamento contínuo</span></div>
+          </li>
+          <li>
+            <div class="value-icon">🏅</div>
+            <div class="value-info"><strong>Profissionais dedicados</strong><span>Equipe em constante capacitação e atualização</span></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSÃO VISÃO VALORES -->
+<section class="mvv-section">
+  <div class="container">
+    <span class="section-label">🌟 Identidade</span>
+    <h2 class="section-title">Missão, Visão e Valores</h2>
+    <div class="mvv-grid">
+      <div class="mvv-card fade-up">
+        <span class="icon">🎯</span>
+        <h3>Missão</h3>
+        <p>Proporcionar educação de alta qualidade, impregnada de amor, carinho e respeito, por meio de um processo de ensino-aprendizagem significativo, formando cidadãos livres e conscientes do seu papel na sociedade.</p>
+      </div>
+      <div class="mvv-card fade-up">
+        <span class="icon">🔭</span>
+        <h3>Visão</h3>
+        <p>Ser referência em educação na região de Muriqui e Mangaratiba, reconhecida pela excelência pedagógica, pelo ambiente acolhedor e pelo compromisso com o desenvolvimento integral de cada aluno.</p>
+      </div>
+      <div class="mvv-card fade-up">
+        <span class="icon">💎</span>
+        <h3>Valores</h3>
+        <p>Amor e respeito pelas pessoas, comprometimento com a qualidade, trabalho cooperativo e colaborativo, ética e transparência em todos os processos e celebração das diferenças individuais.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPE -->
+<section class="team-section">
+  <div class="container">
+    <span class="section-label">👩‍🏫 Nossa Equipe</span>
+    <h2 class="section-title">Profissionais comprometidos</h2>
+    <p class="section-subtitle">Nossa equipe é formada por educadores apaixonados pelo que fazem, sempre em formação e prontos para fazer a diferença na vida dos nossos alunos.</p>
+    <div class="team-grid">
+      <div class="team-card fade-up">
+        <div class="team-avatar">👩‍💼</div>
+        <h3>Direção</h3>
+        <p class="role">Gestão Escolar</p>
+        <p>Liderança comprometida com a excelência pedagógica e o bem-estar de toda a comunidade escolar.</p>
+      </div>
+      <div class="team-card fade-up">
+        <div class="team-avatar">👩‍🏫</div>
+        <h3>Coordenação</h3>
+        <p class="role">Coordenação Pedagógica</p>
+        <p>Profissionais que acompanham de perto o desenvolvimento curricular e apoiam professores e alunos.</p>
+      </div>
+      <div class="team-card fade-up">
+        <div class="team-avatar">📚</div>
+        <h3>Professores</h3>
+        <p class="role">Corpo Docente</p>
+        <p>Educadores qualificados e apaixonados pela educação, dedicados a tornar o aprendizado significativo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTÓRIA -->
+<section class="history-section">
+  <div class="container">
+    <span class="section-label" style="background:rgba(245,200,0,0.2);color:var(--yellow);border:1px solid var(--yellow);">📅 Nossa História</span>
+    <h2 class="section-title" style="color:white;">Uma trajetória de dedicação</h2>
+    <div class="timeline">
+      <div class="timeline-item fade-up">
+        <div class="tl-dot">Início</div>
+        <div class="tl-content">
+          <h4>🏗️ Fundação do CEMU</h4>
+          <p>Nasceu em Muriqui com a missão de oferecer educação de qualidade para as famílias da região, com estrutura acolhedora e professores dedicados.</p>
+        </div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="tl-dot">Crescimento</div>
+        <div class="tl-content">
+          <h4>📈 Expansão dos níveis de ensino</h4>
+          <p>Ampliamos nossa oferta educacional, incorporando novos níveis e aumentando a capacidade de atendimento para servir mais famílias.</p>
+        </div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="tl-dot">Hoje</div>
+        <div class="tl-content">
+          <h4>🌟 Referência em Muriqui</h4>
+          <p>Hoje somos reconhecidos pela comunidade como uma escola de referência, com metodologia moderna e um ambiente que as crianças adoram.</p>
+        </div>
+      </div>
+      <div class="timeline-item fade-up">
+        <div class="tl-dot">Futuro</div>
+        <div class="tl-content">
+          <h4>🚀 Sempre evoluindo</h4>
+          <p>Continuamos investindo em formação de professores, infraestrutura e metodologias para entregar a melhor educação possível para os nossos alunos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner">
+  <h2>Venha conhecer o CEMU! 🏫</h2>
+  <p>Agende uma visita e descubra por que somos a escola certa para o seu filho.</p>
+  <a href="matricula.html" class="btn-red">Agendar visita →</a>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  document.getElementById('nav-placeholder').innerHTML = getNav('sobre');
+  document.getElementById('footer-placeholder').innerHTML = getFooter();
+</script>
+</body>
+</html>

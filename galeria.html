@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Galeria – CEMU</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* FILTER TABS */
+  .filter-tabs {
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+    margin: 2.5rem 0 3rem;
+  }
+  .filter-btn {
+    padding: 10px 24px; border-radius: 50px;
+    border: 2px solid #e0e0e0; background: white;
+    font-family: 'Nunito', sans-serif; font-weight: 800;
+    font-size: 0.88rem; cursor: pointer; transition: all 0.2s;
+    color: var(--gray);
+  }
+  .filter-btn:hover { border-color: var(--red); color: var(--red); }
+  .filter-btn.active { background: var(--red); border-color: var(--red); color: white; }
+
+  /* GALLERY MASONRY */
+  .gallery-grid {
+    columns: 3; column-gap: 1.2rem;
+  }
+  .gallery-item {
+    break-inside: avoid; margin-bottom: 1.2rem;
+    border-radius: 16px; overflow: hidden; position: relative;
+    cursor: pointer; transition: transform 0.3s;
+    background: var(--light-gray);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .gallery-item:hover { transform: scale(1.02); box-shadow: 0 16px 40px rgba(0,0,0,0.15); }
+
+  .gallery-placeholder {
+    width: 100%; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.5rem; padding: 3rem 2rem;
+    font-size: 0.85rem; color: var(--gray); font-weight: 700;
+    position: relative;
+  }
+  .gallery-placeholder .emoji { font-size: 3.5rem; }
+
+  .g-tall { height: 340px; }
+  .g-short { height: 220px; }
+  .g-med { height: 280px; }
+
+  .g1 { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+  .g2 { background: linear-gradient(135deg, #a1c4fd, #c2e9fb); }
+  .g3 { background: linear-gradient(135deg, #d4fc79, #96e6a1); }
+  .g4 { background: linear-gradient(135deg, #f093fb, #f5576c); }
+  .g5 { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+  .g6 { background: linear-gradient(135deg, #43e97b, #38f9d7); }
+  .g7 { background: linear-gradient(135deg, #fa709a, #fee140); }
+  .g8 { background: linear-gradient(135deg, #a18cd1, #fbc2eb); }
+  .g9 { background: linear-gradient(135deg, #ffecd2, #fcb69f); }
+  .g10 { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .g11 { background: linear-gradient(135deg, #f7971e, #ffd200); }
+  .g12 { background: linear-gradient(135deg, #11998e, #38ef7d); }
+
+  .overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(214,40,40,0.85), transparent 50%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; align-items: flex-end; padding: 1.2rem;
+  }
+  .gallery-item:hover .overlay { opacity: 1; }
+  .overlay span { color: white; font-weight: 800; font-size: 0.9rem; }
+
+  /* LIGHTBOX */
+  .lightbox {
+    display: none; position: fixed; inset: 0; z-index: 2000;
+    background: rgba(0,0,0,0.92); align-items: center; justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox-content {
+    max-width: 800px; width: 90%; background: white; border-radius: 20px;
+    overflow: hidden; position: relative;
+  }
+  .lightbox-img {
+    width: 100%; height: 450px;
+    display: flex; align-items: center; justify-content: center; font-size: 6rem;
+  }
+  .lightbox-info { padding: 1.5rem 2rem; }
+  .lightbox-info h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--dark); margin-bottom: 0.3rem; }
+  .lightbox-info p { font-size: 0.9rem; color: var(--gray); font-weight: 600; }
+  .lightbox-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: var(--red); color: white; border: none; cursor: pointer;
+    width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Nunito', sans-serif; transition: all 0.2s;
+  }
+  .lightbox-close:hover { background: var(--red-dark); }
+
+  /* UPLOAD NOTE */
+  .upload-note {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    border: 2px dashed #ffb74d; border-radius: 16px;
+    padding: 2rem; text-align: center; margin-top: 3rem;
+  }
+  .upload-note h3 { font-weight: 800; color: #e65100; margin-bottom: 0.5rem; font-size: 1.1rem; }
+  .upload-note p { font-size: 0.9rem; color: #bf360c; font-weight: 600; }
+
+  @media (max-width: 900px) { .gallery-grid { columns: 2; } }
+  @media (max-width: 600px) { .gallery-grid { columns: 1; } }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-dots"></div>
+  <div class="page-hero-content">
+    <span class="page-hero-tag">📸 Fotos</span>
+    <h1>Galeria do <em>CEMU</em></h1>
+    <p>Veja os momentos especiais, as atividades e a estrutura da nossa escola através das nossas fotos.</p>
+  </div>
+</div>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Início</a>
+    <span>›</span>
+    <span>Galeria</span>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section style="background:var(--white);">
+  <div class="container">
+    <span class="section-label">📷 Nossas Fotos</span>
+    <h2 class="section-title">Um dia no CEMU</h2>
+    <p class="section-subtitle">Momentos de aprendizado, diversão e crescimento que fazem parte da nossa rotina.</p>
+
+    <div class="filter-tabs">
+      <button class="filter-btn active" onclick="filterGallery('all', this)">Todos</button>
+      <button class="filter-btn" onclick="filterGallery('estrutura', this)">🏫 Estrutura</button>
+      <button class="filter-btn" onclick="filterGallery('atividades', this)">🎨 Atividades</button>
+      <button class="filter-btn" onclick="filterGallery('eventos', this)">🎉 Eventos</button>
+      <button class="filter-btn" onclick="filterGallery('alunos', this)">👦 Alunos</button>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-item g-tall g1 fade-up" data-cat="estrutura" onclick="openLightbox('🏫','Fachada da Escola','A entrada principal do CEMU, acolhedora e segura.')">
+        <div class="gallery-placeholder"><span class="emoji">🏫</span>Fachada</div>
+        <div class="overlay"><span>Fachada da Escola</span></div>
+      </div>
+      <div class="gallery-item g-short g2 fade-up" data-cat="atividades" onclick="openLightbox('🎨','Sala de Aula','Ambiente preparado para o aprendizado criativo.')">
+        <div class="gallery-placeholder"><span class="emoji">🎨</span>Sala de Aula</div>
+        <div class="overlay"><span>Sala de Aula</span></div>
+      </div>
+      <div class="gallery-item g-med g3 fade-up" data-cat="alunos" onclick="openLightbox('⚽','Recreio','Momento de alegria e socialização dos alunos.')">
+        <div class="gallery-placeholder"><span class="emoji">⚽</span>Recreio</div>
+        <div class="overlay"><span>Momento do Recreio</span></div>
+      </div>
+      <div class="gallery-item g-short g4 fade-up" data-cat="eventos" onclick="openLightbox('🎭','Apresentações','Apresentações culturais e festividades da escola.')">
+        <div class="gallery-placeholder"><span class="emoji">🎭</span>Apresentações</div>
+        <div class="overlay"><span>Apresentações Culturais</span></div>
+      </div>
+      <div class="gallery-item g-med g5 fade-up" data-cat="estrutura" onclick="openLightbox('📚','Biblioteca','Espaço de leitura e pesquisa para todos os alunos.')">
+        <div class="gallery-placeholder"><span class="emoji">📚</span>Biblioteca</div>
+        <div class="overlay"><span>Biblioteca</span></div>
+      </div>
+      <div class="gallery-item g-tall g6 fade-up" data-cat="atividades" onclick="openLightbox('🔬','Ciências','Aulas práticas que despertam a curiosidade científica.')">
+        <div class="gallery-placeholder"><span class="emoji">🔬</span>Ciências</div>
+        <div class="overlay"><span>Aulas de Ciências</span></div>
+      </div>
+      <div class="gallery-item g-short g7 fade-up" data-cat="eventos" onclick="openLightbox('🎉','Festa Junina','Nossa tradicional Festa Junina com muito forró!')">
+        <div class="gallery-placeholder"><span class="emoji">🎉</span>Festa Junina</div>
+        <div class="overlay"><span>Festa Junina</span></div>
+      </div>
+      <div class="gallery-item g-med g8 fade-up" data-cat="alunos" onclick="openLightbox('🍼','Berçário','Ambiente acolhedor e seguro para os menores.')">
+        <div class="gallery-placeholder"><span class="emoji">🍼</span>Berçário</div>
+        <div class="overlay"><span>Berçário</span></div>
+      </div>
+      <div class="gallery-item g-short g9 fade-up" data-cat="estrutura" onclick="openLightbox('🏃','Quadra','Espaço para atividades físicas e esportes.')">
+        <div class="gallery-placeholder"><span class="emoji">🏃</span>Quadra</div>
+        <div class="overlay"><span>Quadra Esportiva</span></div>
+      </div>
+      <div class="gallery-item g-tall g10 fade-up" data-cat="atividades" onclick="openLightbox('🎵','Música','Atividades de musicalização para todas as idades.')">
+        <div class="gallery-placeholder"><span class="emoji">🎵</span>Musicalização</div>
+        <div class="overlay"><span>Musicalização</span></div>
+      </div>
+      <div class="gallery-item g-short g11 fade-up" data-cat="eventos" onclick="openLightbox('🏆','Formaturas','Momentos especiais de conquistas dos alunos.')">
+        <div class="gallery-placeholder"><span class="emoji">🏆</span>Formaturas</div>
+        <div class="overlay"><span>Formaturas</span></div>
+      </div>
+      <div class="gallery-item g-med g12 fade-up" data-cat="alunos" onclick="openLightbox('🌱','Ed. Infantil','Momentos preciosos da Educação Infantil.')">
+        <div class="gallery-placeholder"><span class="emoji">🌱</span>Ed. Infantil</div>
+        <div class="overlay"><span>Educação Infantil</span></div>
+      </div>
+    </div>
+
+    <div class="upload-note">
+      <h3>📸 Quer ver as fotos reais do CEMU aqui?</h3>
+      <p>Substitua estes espaços pelas fotos da escola. Basta inserir as imagens reais nos espaços acima e o site ficará ainda mais incrível!</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner">
+  <h2>Quer conhecer pessoalmente? 🏫</h2>
+  <p>Agende uma visita e venha ver de perto toda a estrutura do CEMU.</p>
+  <a href="matricula.html" class="btn-red">Agendar visita →</a>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <div class="lightbox-content">
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+    <div class="lightbox-img" id="lb-img" style="background:linear-gradient(135deg,#ffecd2,#fcb69f);"></div>
+    <div class="lightbox-info">
+      <h3 id="lb-title"></h3>
+      <p id="lb-desc"></p>
+    </div>
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  document.getElementById('nav-placeholder').innerHTML = getNav('galeria');
+  document.getElementById('footer-placeholder').innerHTML = getFooter();
+
+  function filterGallery(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      if (cat === 'all' || item.dataset.cat === cat) {
+        item.style.display = 'flex';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  }
+
+  function openLightbox(emoji, title, desc) {
+    document.getElementById('lb-img').textContent = emoji;
+    document.getElementById('lb-img').style.fontSize = '6rem';
+    document.getElementById('lb-title').textContent = title;
+    document.getElementById('lb-desc').textContent = desc;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox(e) {
+    if (!e || e.target === document.getElementById('lightbox') || e.currentTarget.classList.contains('lightbox-close')) {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+</script>
+</body>
+</html>

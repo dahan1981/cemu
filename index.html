@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEMU – Centro Educacional de Muriqui</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ===== HERO ===== */
+  #home {
+    min-height: 100vh;
+    background: var(--red);
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-top: 72px;
+  }
+
+  .hero-shapes::before {
+    content: ''; position: absolute; top: -100px; right: -100px;
+    width: 600px; height: 600px; background: var(--yellow); border-radius: 50%; opacity: 0.13;
+  }
+  .hero-shapes::after {
+    content: ''; position: absolute; bottom: -150px; left: -80px;
+    width: 400px; height: 400px; background: var(--yellow); border-radius: 50%; opacity: 0.08;
+  }
+  .hero-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(245,200,0,0.2) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto;
+    padding: 4rem 2rem;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: center;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    background: rgba(245,200,0,0.18); border: 2px solid var(--yellow);
+    color: var(--yellow); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 3px; padding: 6px 16px; border-radius: 50px;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900; color: var(--white); line-height: 1.1; margin-bottom: 1.5rem;
+  }
+  .hero-title em { font-style: normal; color: var(--yellow); }
+
+  .hero-desc {
+    color: rgba(255,255,255,0.85); font-size: 1.1rem;
+    line-height: 1.7; margin-bottom: 2.5rem; font-weight: 600;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-outline-white {
+    border: 2px solid rgba(255,255,255,0.5); color: var(--white);
+    padding: 14px 32px; border-radius: 50px; font-weight: 800;
+    font-size: 1rem; text-decoration: none; transition: all 0.25s;
+  }
+  .btn-outline-white:hover { border-color: white; background: rgba(255,255,255,0.1); transform: translateY(-3px); }
+
+  /* HERO CARD */
+  .hero-card {
+    background: var(--white); border-radius: 24px; padding: 2.5rem;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2); position: relative;
+    animation: fadeUp 0.7s ease 0.3s forwards; opacity: 0;
+  }
+  .hero-card::before {
+    content: ''; position: absolute; top: -4px; right: -4px; bottom: -4px; left: -4px;
+    background: var(--yellow); border-radius: 28px; z-index: -1;
+  }
+  .hero-card-title {
+    font-family: 'Playfair Display', serif; font-size: 1.35rem;
+    font-weight: 700; color: var(--red); margin-bottom: 1.5rem; text-align: center;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;
+  }
+
+  .stat-box {
+    background: var(--off-white); border-radius: 14px; padding: 1.2rem;
+    text-align: center; border: 2px solid transparent; transition: all 0.2s; cursor: default;
+  }
+  .stat-box:hover { border-color: var(--yellow); transform: translateY(-2px); }
+  .stat-emoji { font-size: 2rem; display: block; margin-bottom: 0.4rem; }
+  .stat-label { font-size: 0.78rem; font-weight: 800; color: var(--gray); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* NIVEIS */
+  .niveis-section { background: var(--light-gray); }
+  .niveis-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+
+  .nivel-card {
+    background: var(--white); border-radius: 20px; padding: 2.5rem 2rem;
+    text-align: center; transition: all 0.3s; border: 2px solid transparent; position: relative; overflow: hidden;
+  }
+  .nivel-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: var(--yellow); transform: scaleX(0); transition: transform 0.3s;
+  }
+  .nivel-card:hover { border-color: var(--yellow); transform: translateY(-8px); box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+  .nivel-card:hover::before { transform: scaleX(1); }
+  .nivel-emoji { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .nivel-card h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700; color: var(--red); margin-bottom: 0.75rem; }
+  .nivel-card p { font-size: 0.9rem; color: var(--gray); font-weight: 600; line-height: 1.65; }
+
+  /* DIFF */
+  .diff-section { background: var(--red); }
+  .diff-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 3rem; }
+
+  .diff-card {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 20px; padding: 2rem 1.5rem; text-align: center; transition: all 0.3s;
+  }
+  .diff-card:hover { background: rgba(255,255,255,0.15); transform: translateY(-6px); }
+  .diff-icon {
+    width: 64px; height: 64px; background: var(--yellow); border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; margin: 0 auto 1.2rem;
+  }
+  .diff-card h3 { font-weight: 800; color: var(--yellow); font-size: 1rem; margin-bottom: 0.75rem; }
+  .diff-card p { font-size: 0.85rem; color: rgba(255,255,255,0.8); font-weight: 600; line-height: 1.6; }
+
+  /* TESTIMONIALS */
+  .testi-section { background: var(--white); }
+  .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+
+  .testi-card {
+    background: var(--off-white); border-radius: 20px; padding: 2rem;
+    position: relative; transition: all 0.3s; border: 2px solid transparent;
+  }
+  .testi-card:hover { border-color: var(--yellow); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+  .testi-card::before {
+    content: '"'; position: absolute; top: 1rem; right: 1.5rem;
+    font-size: 5rem; color: var(--yellow); font-family: 'Playfair Display', serif; line-height: 1; opacity: 0.5;
+  }
+  .stars { color: var(--yellow); font-size: 1rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .testi-card p { font-size: 0.9rem; color: var(--gray); font-weight: 600; line-height: 1.7; margin-bottom: 1.5rem; }
+  .author { display: flex; align-items: center; gap: 0.75rem; }
+  .avatar {
+    width: 42px; height: 42px; border-radius: 50%; background: var(--red);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 900; font-size: 1rem;
+  }
+  .author-info strong { display: block; font-weight: 800; font-size: 0.9rem; }
+  .author-info span { font-size: 0.8rem; color: var(--gray); font-weight: 600; }
+
+  /* HERO TEXT ANIMATIONS */
+  .hero-text-content > * { animation: fadeUp 0.7s ease forwards; opacity: 0; }
+  .hero-text-content > *:nth-child(1) { animation-delay: 0.1s; }
+  .hero-text-content > *:nth-child(2) { animation-delay: 0.25s; }
+  .hero-text-content > *:nth-child(3) { animation-delay: 0.4s; }
+  .hero-text-content > *:nth-child(4) { animation-delay: 0.55s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .hero-content { grid-template-columns: 1fr; }
+    .niveis-grid { grid-template-columns: 1fr; }
+    .diff-grid { grid-template-columns: repeat(2, 1fr); }
+    .testi-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .diff-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-shapes" style="position:absolute;inset:0;pointer-events:none;"></div>
+  <div class="hero-dots"></div>
+  <div class="hero-content">
+    <div class="hero-text-content">
+      <span class="hero-tag">📚 Muriqui, RJ</span>
+      <h1 class="hero-title">Formando o<br><em>futuro</em> com<br>amor e dedicação</h1>
+      <p class="hero-desc">No CEMU, acreditamos que cada criança é única. Oferecemos uma educação completa, do berçário ao ensino fundamental, com carinho e excelência.</p>
+      <div class="hero-btns">
+        <a href="matricula.html" class="btn-primary">✏️ Matricule-se agora</a>
+        <a href="sobre.html" class="btn-outline-white">Conheça a escola</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <h3 class="hero-card-title">🎒 Níveis de Ensino</h3>
+      <div class="hero-stats">
+        <div class="stat-box"><span class="stat-emoji">🍼</span><span class="stat-label">Berçário</span></div>
+        <div class="stat-box"><span class="stat-emoji">🌱</span><span class="stat-label">Ed. Infantil</span></div>
+        <div class="stat-box"><span class="stat-emoji">📖</span><span class="stat-label">Fund. I</span></div>
+        <div class="stat-box"><span class="stat-emoji">🏆</span><span class="stat-label">Fund. II</span></div>
+      </div>
+      <p style="text-align:center; font-size:0.85rem; color:var(--gray); font-weight:600; margin-bottom:1rem;">📍 Muriqui, Rio de Janeiro</p>
+      <a href="matricula.html" class="btn-primary" style="width:100%; justify-content:center;">Agende uma visita</a>
+    </div>
+  </div>
+</section>
+
+<!-- NIVEIS -->
+<section class="niveis-section">
+  <div class="container">
+    <span class="section-label">📚 Ensino</span>
+    <h2 class="section-title">Níveis de ensino</h2>
+    <p class="section-subtitle">Do berçário ao fundamental, cuidamos do desenvolvimento completo do seu filho em cada etapa.</p>
+    <div class="niveis-grid">
+      <div class="nivel-card fade-up">
+        <span class="nivel-emoji">🍼</span>
+        <h3>Berçário</h3>
+        <p>Cuidado especializado e ambiente estimulante para os primeiros meses e anos de vida, com foco no desenvolvimento sensorial e afetivo.</p>
+      </div>
+      <div class="nivel-card fade-up">
+        <span class="nivel-emoji">🌈</span>
+        <h3>Educação Infantil</h3>
+        <p>Do maternal ao Pré II, com atividades lúdicas, musicalização, psicomotricidade e muito aprendizado através da brincadeira.</p>
+      </div>
+      <div class="nivel-card fade-up">
+        <span class="nivel-emoji">📖</span>
+        <h3>Ensino Fundamental</h3>
+        <p>Do 1º ao 9º ano com base curricular sólida, projetos interdisciplinares e suporte individualizado para cada aluno.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS -->
+<section class="diff-section">
+  <div class="container">
+    <span class="section-label" style="background:rgba(245,200,0,0.2);color:var(--yellow);border:1px solid var(--yellow);">⭐ Diferenciais</span>
+    <h2 class="section-title" style="color:white;">Por que escolher o CEMU?</h2>
+    <div class="diff-grid">
+      <div class="diff-card fade-up">
+        <div class="diff-icon">👩‍🏫</div>
+        <h3>Ensino Personalizado</h3>
+        <p>Reconhecemos a singularidade de cada aluno e adaptamos o ensino às suas necessidades individuais.</p>
+      </div>
+      <div class="diff-card fade-up">
+        <div class="diff-icon">🏗️</div>
+        <h3>Estrutura Completa</h3>
+        <p>Ambiente seguro, moderno e projetado para estimular descobertas e desenvolvimento saudável.</p>
+      </div>
+      <div class="diff-card fade-up">
+        <div class="diff-icon">🎨</div>
+        <h3>Atividades Extras</h3>
+        <p>Programação extracurricular rica com projetos, feira de ciências, artes e muito mais.</p>
+      </div>
+      <div class="diff-card fade-up">
+        <div class="diff-icon">🥗</div>
+        <h3>Alimentação Saudável</h3>
+        <p>Cardápio nutricional especializado, planejado semanalmente para garantir saúde e energia.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="testi-section">
+  <div class="container">
+    <span class="section-label">💬 Depoimentos</span>
+    <h2 class="section-title">O que as famílias dizem</h2>
+    <div class="testi-grid">
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p>O CEMU transformou a vida do meu filho. A dedicação dos professores é incomparável e a evolução dele foi incrível!</p>
+        <div class="author">
+          <div class="avatar">M</div>
+          <div class="author-info"><strong>Marina Oliveira</strong><span>Mãe do João, 3º ano</span></div>
+        </div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p>Desde o berçário nossa filha estuda no CEMU e não trocamos por nada. Ambiente seguro e profissionais carinhosos!</p>
+        <div class="author">
+          <div class="avatar">R</div>
+          <div class="author-info"><strong>Roberto Santos</strong><span>Pai da Ana, Ed. Infantil</span></div>
+        </div>
+      </div>
+      <div class="testi-card fade-up">
+        <div class="stars">★★★★★</div>
+        <p>Fui aluna do CEMU e hoje meu filho também é. A escola cresceu mas manteve a essência: qualidade e muito cuidado.</p>
+        <div class="author">
+          <div class="avatar">C</div>
+          <div class="author-info"><strong>Carla Freitas</strong><span>Ex-aluna e mãe do Lucas</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-banner">
+  <h2>Garanta a vaga do seu filho! 🎒</h2>
+  <p>Vagas limitadas — faça a matrícula agora e assegure o melhor para o futuro dele.</p>
+  <a href="matricula.html" class="btn-red">Quero matricular meu filho →</a>
+</section>
+
+<div id="footer-placeholder"></div>
+
+<script src="shared.js"></script>
+<script>
+  document.getElementById('nav-placeholder').innerHTML = getNav('home');
+  document.getElementById('footer-placeholder').innerHTML = getFooter();
+</script>
+</body>
+</html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matrícula – CEMU</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* HERO ESPECIAL */
+  .mat-hero {
+    padding-top: 72px;
+    background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+    position: relative; overflow: hidden; text-align: center;
+  }
+  .mat-hero::before {
+    content: ''; position: absolute; top: -80px; right: -80px;
+    width: 400px; height: 400px; background: var(--yellow); border-radius: 50%; opacity: 0.12;
+  }
+  .mat-hero::after {
+    content: ''; position: absolute; bottom: -100px; left: -60px;
+    width: 350px; height: 350px; background: var(--yellow); border-radius: 50%; opacity: 0.08;
+  }
+  .mat-hero-dots {
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(245,200,0,0.2) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+  .mat-hero-content { position: relative; z-index: 2; padding: 4.5rem 2rem 3rem; }
+  .mat-hero-badge {
+    display: inline-block; background: var(--yellow); color: var(--red-dark);
+    font-size: 0.78rem; font-weight: 800; letter-spacing: 2px;
+    padding: 7px 18px; border-radius: 50px; text-transform: uppercase; margin-bottom: 1.2rem;
+  }
+  .mat-hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 900; color: white; line-height: 1.1; margin-bottom: 1rem;
+  }
+  .mat-hero h1 em { font-style: normal; color: var(--yellow); }
+  .mat-hero p { color: rgba(255,255,255,0.85); font-size: 1.1rem; font-weight: 600; max-width: 600px; margin: 0 auto; line-height: 1.7; }
+
+  /* STEPS */
+  .steps-section { background: var(--light-gray); }
+  .steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .step-card {
+    background: var(--white); border-radius: 20px; padding: 2rem 1.5rem; text-align: center;
+    position: relative; transition: all 0.3s;
+  }
+  .step-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); }
+  .step-num {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--red); color: white;
+    font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 1.2rem;
+  }
+  .step-card h3 { font-weight: 800; color: var(--dark); font-size: 0.95rem; margin-bottom: 0.75rem; }
+  .step-card p { font-size: 0.85rem; color: var(--gray); font-weight: 600; line-height: 1.6; }
+
+  /* MAIN FORM */
+  .form-section { background: var(--white); }
+  .form-layout { display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; margin-top: 3rem; align-items: start; }
+
+  /* DOCS LIST */
+  .docs-card {
+    background: var(--off-white); border-radius: 20px; padding: 2rem;
+    border: 2px solid var(--yellow); position: sticky; top: 90px;
+  }
+  .docs-card h3 { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--dark); margin-bottom: 1.5rem; }
+  .doc-item {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.75rem 0; border-bottom: 1px solid #eee;
+  }
+  .doc-item:last-child { border-bottom: none; }
+  .doc-check { width: 24px; height: 24px; background: var(--yellow); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; margin-top: 2px; }
+  .doc-item strong { display: block; font-weight: 800; font-size: 0.88rem; color: var(--dark); margin-bottom: 2px; }
+  .doc-item span { font-size: 0.8rem; color: var(--gray); font-weight: 600; }
+
+  .contact-note {
+    background: var(--red); color: white; border-radius: 16px;
+    padding: 1.5rem; margin-top: 1.5rem; text-align: center;
+  }
+  .contact-note p { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; opacity: 0.9; }
+  .contact-note a {
+    background: var(--yellow); color: var(--red-dark); padding: 10px 22px;
+    border-radius: 50px; text-decoration: none; font-weight: 900; font-size: 0.88rem; display: inline-block;
+    transition: all 0.2s;
+  }
+  .contact-note a:hover { background: var(--yellow-light); }
+
+  /* FORM BOX */
+  .mat-form { background: var(--light-gray); border-radius: 24px; padding: 2.5rem; }
+  .mat-form h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--dark); margin-bottom: 0.4rem; }
+  .mat-form .sub { font-size: 0.88rem; color: var(--gray); font-weight: 600; margin-bottom: 2rem; }
+
+  .form-section-title {
+    font-size: 0.78rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--red); margin: 1.5rem 0 1rem; padding-bottom: 0.5rem; border-bottom: 2px solid var(--yellow);
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+  .form-group label { font-size: 0.82rem; font-weight: 800; color: var(--dark); }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    border: 2px solid #e0e0e0; border-radius: 12px; padding: 12px 16px;
+    font-family: 'Nunito', sans-serif; font-size: 0.9rem; font-weight: 600;
+    color: var(--dark); background: var(--white); transition: all 0.2s; outline: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--yellow); box-shadow: 0 0 0 3px rgba(245,200,0,0.15); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+
+  .btn-submit-lg {
+    width: 100%; background: var(--red); color: white; border: none;
+    padding: 18px; border-radius: 14px; font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem; font-weight: 900; cursor: pointer; transition: all 0.25s;
+    margin-top: 0.5rem; letter-spacing: 0.5px;
+  }
+  .btn-submit-lg:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(214,40,40,0.3); }
+
+  /* VAGAS ALERTA */
+  .vagas-banner {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    border-left: 5px solid #ff9800; border-radius: 12px;
+    padding: 1rem 1.5rem; margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .vagas-banner span { font-size: 1.5rem; }
+  .vagas-banner p { font-size: 0.88rem; color: #e65100; font-weight: 700; }
+  .vagas-banner strong { color: #bf360c; }
+
+  /* SUCCESS */
+  .success-screen {
+    display: none; text-align: center; padding: 3rem;
+  }
+  .success-screen.show { display: block; }
+  .success-screen .check { font-size: 5rem; margin-bottom: 1.5rem; }
+  .success-screen h3 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--red); margin-bottom: 1rem; }
+  .success-screen p { font-size: 1rem; color: var(--gray); font-weight: 600; line-height: 1.7; max-width: 400px; margin: 0 auto 2rem; }
+
+  @media (max-width: 900px) {
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .form-layout { grid-template-columns: 1fr; }
+    .docs-card { position: static; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .steps-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="nav-placeholder"></div>
+
+<!-- HERO -->
+<div class="mat-hero">
+  <div class="mat-hero-dots"></div>
+  <div class="mat-hero-content">
+    <span class="mat-hero-badge">✏️ Matrículas Abertas 2025</span>
+    <h1>Garanta a vaga<br>do seu <em>filho</em>!</h1>
+    <p>Preencha o formulário abaixo e nossa equipe entrará em contato para dar continuidade ao processo de matrícula.</p>
+  </div>
+</div>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="index.html">Início</a>
+    <span>›</span>
+    <span>Matrícula</span>
+  </div>
+</div>
+
+<!-- STEPS -->
+<section class="steps-section">
+  <div class="container">
+    <span class="section-label">📋 Como Funciona</span>
+    <h2 class="section-title">Processo de matrícula</h2>
+    <div class="steps-grid">
+      <div class="step-card fade-up">
+        <div class="step-num">1</div>
+        <h3>Preencha o formulário</h3>
+        <p>Preencha seus dados e do seu filho no formulário abaixo para manifestar interesse.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">2</div>
+        <h3>Receba nosso contato</h3>
+        <p>Nossa equipe entrará em contato em até 24h para agendar sua visita à escola.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">3</div>
+        <h3>Visite a escola</h3>
+        <p>Venha conhecer nossas instalações, tirar dúvidas e conhecer nossa proposta pedagógica.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num">4</div>
+        <h3>Confirme a matrícula</h3>
+        <p>Apresente a documentação na secretaria e finalize a matrícula do seu filho.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULÁRIO -->
+<section class="form-section">
+  <div class="container">
+    <span class="section-label">📝 Formulário</span>
+    <h2 class="section-title">Solicite sua matrícula</h2>
+    <div class="form-layout">
+
+      <!-- DOCS SIDEBAR -->
+      <div>
+        <div class="docs-card fade-up">
+          <h3>📄 Documentos necessários</h3>
+          <div class="doc-item">
+            <div class="doc-check">✓</div>
+            <div><strong>Certidão de Nascimento</strong><span>Original e cópia</span></div>
+          </div>
+          <div class="doc-item">
+            <div class="doc-check">✓</div>
+            <div><strong>Carteira de Vacinação</strong><span>Atualizada</span></div>
+          </div>
+          <div class="doc-item">
+            <div class="doc-check">✓</div>
+            <div><strong>Histórico Escolar</strong><span>Para transferência de escola</span></div>
+          </div>
+          <div class="doc-item">
+            <div class="doc-check">✓</div>
+            <div><strong>RG e CPF dos responsáveis</strong><span>Original e cópia</span></div>
+          </div>
+          <div class="doc-item">
+            <div class="doc-check">✓</div>
+            <div><strong>Comprovante de Residência</strong><span>Recente (últimos 3 meses)</span></div>
+          </div>
+          <div class="doc-item">
+            <div class="doc-check">✓</div>
+            <div><strong>Foto 3×4</strong><span>Recente do aluno</span></div>
+          </div>
+          <div class="contact-note">
+            <p>Dúvidas sobre documentação? Fale com a secretaria:</p>
+            <a href="https://wa.me/5521999999999" target="_blank">💬 Chamar no WhatsApp</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="mat-form fade-up">
+        <h3>✏️ Formulário de matrícula</h3>
+        <p class="sub">*Campos obrigatórios. Após envio, entraremos em contato em até 24h úteis.</p>
+
+        <div id="form-area">
+          <div class="vagas-banner">
+            <span>⚠️</span>
+            <p>As vagas são <strong>limitadas</strong>! Garanta já a vaga do seu filho para 2025.</p>
+          </div>
+
+          <p class="form-section-title">👨‍👩‍👦 Dados do Responsável</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome completo *</label>
+              <input type="text" id="resp-nome" placeholder="Seu nome">
+            </div>
+            <div class="form-group">
+              <label>Grau de parentesco *</label>
+              <select id="resp-grau">
+                <option value="">Selecione...</option>
+                <option>Pai/Mãe</option>
+                <option>Avô/Avó</option>
+                <option>Responsável Legal</option>
+                <option>Outro</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Telefone / WhatsApp *</label>
+              <input type="tel" id="resp-tel" placeholder="(21) 99999-9999">
+            </div>
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" id="resp-email" placeholder="email@exemplo.com">
+            </div>
+          </div>
+
+          <p class="form-section-title">🎒 Dados do Aluno</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome do aluno *</label>
+              <input type="text" id="aluno-nome" placeholder="Nome completo">
+            </div>
+            <div class="form-group">
+              <label>Data de nascimento *</label>
+              <input type="date" id="aluno-nasc">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nível de ensino desejado *</label>
+              <select id="nivel">
+                <option value="">Selecione...</option>
+                <option>Berçário (0–1 ano)</option>
+                <option>Maternal I (1–2 anos)</option>
+                <option>Maternal II (2–3 anos)</option>
+                <option>Pré I (4 anos)</option>
+                <option>Pré II (5 anos)</option>
+                <option>1º Ano – Fundamental I</option>
+                <option>2º Ano – Fundamental I</option>
+                <option>3º Ano – Fundamental I</option>
+                <option>4º Ano – Fundamental I</option>
+                <option>5º Ano – Fundamental I</option>
+                <option>6º ao 9º Ano – Fundamental II</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Turno preferido</label>
+              <select id="turno">
+                <option value="">Selecione...</option>
+                <option>Manhã</option>
+                <option>Tarde</option>
+                <option>Integral</option>
+              </select>
+            </div>
+          </div>
+
+          <p class="form-section-title">💬 Informações Adicionais</p>
+          <div class="form-group">
+            <label>O aluno possui alguma necessidade especial ou condição de saúde?</label>
+            <textarea id="necessidades" placeholder="Descreva aqui se houver alguma informação relevante para melhor atendimento..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Como conheceu o CEMU?</label>
+            <select id="como">
+              <option value="">Selecione...</option>
+              <option>Indicação de amigos/familiares</option>
+              <option>Redes sociais (Instagram/Facebook)</option>
+              <option>Google / Internet</option>
+              <option>Já sou ex-aluno</option>
+              <option>Morador da região</option>
+              <option>Outro</option>
+            </select>
+          </div>
+
+          <button class="btn-submit-lg" onclick="enviarMatricula()">✏️ Enviar solicitação de matrícula</button>
+        </div>
+
+        <div class="success-screen" id="success">
+          <div class="check">🎉</div>
+          <h3>Solicitação enviada!</h3>
+          <p>Recebemos sua solicitação de matrícula. Nossa equipe entrará em contato em até <strong>24 horas úteis</strong> para dar continuidade ao processo.</p>
+          <a href="index.html" class="btn-red" style="display:inline-flex;">Voltar ao início →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA BOTTOM -->
+<section class="cta-banner">
+  <h2>Dúvidas? Fale conosco! 💬</h2>
+  <p>Nossa equipe está pronta para ajudar você a encontrar a melhor opção para o seu filho.</p>
+  <a href="contato.html" class="btn-red">Ir para o Contato →</a>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="shared.js"></script>
+<script>
+  document.getElementById('nav-placeholder').innerHTML = getNav('');
+  document.getElementById('footer-placeholder').innerHTML = getFooter();
+
+  function enviarMatricula() {
+    const nome = document.getElementById('resp-nome').value;
+    const tel = document.getElementById('resp-tel').value;
+    const aluno = document.getElementById('aluno-nome').value;
+    const nivel = document.getElementById('nivel').value;
+
+    if (!nome || !tel || !aluno || !nivel) {
+      alert('Por favor, preencha todos os campos obrigatórios (*).');
+      return;
+    }
+
+    document.getElementById('form-area').style.display = 'none';
+    document.getElementById('success').classList.add('show');
+    window.scrollTo({ top: document.querySelector('.mat-form').offsetTop - 100, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
