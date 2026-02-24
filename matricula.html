@@ -373,11 +373,39 @@
     const tel = document.getElementById('resp-tel').value;
     const aluno = document.getElementById('aluno-nome').value;
     const nivel = document.getElementById('nivel').value;
+    const turno = document.getElementById('turno').value;
+    const nasc = document.getElementById('aluno-nasc').value;
+    const grau = document.getElementById('resp-grau').value;
+    const email = document.getElementById('resp-email').value;
+    const necessidades = document.getElementById('necessidades').value;
+    const como = document.getElementById('como').value;
 
     if (!nome || !tel || !aluno || !nivel) {
       alert('Por favor, preencha todos os campos obrigatórios (*).');
       return;
     }
+
+    const msg = 
+`*📋 SOLICITAÇÃO DE MATRÍCULA – CEMU*
+
+*👨‍👩‍👦 Dados do Responsável*
+• Nome: ${nome}
+• Parentesco: ${grau}
+• Telefone: ${tel}
+• E-mail: ${email || 'Não informado'}
+
+*🎒 Dados do Aluno*
+• Nome: ${aluno}
+• Nascimento: ${nasc || 'Não informado'}
+• Nível desejado: ${nivel}
+• Turno: ${turno || 'Não informado'}
+
+*💬 Informações adicionais*
+• Necessidades especiais: ${necessidades || 'Nenhuma'}
+• Como conheceu o CEMU: ${como || 'Não informado'}`;
+
+    const url = `https://wa.me/5521991745066?text=${encodeURIComponent(msg)}`;
+    window.open(url, '_blank');
 
     document.getElementById('form-area').style.display = 'none';
     document.getElementById('success').classList.add('show');
